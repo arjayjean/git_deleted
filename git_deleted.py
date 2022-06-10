@@ -23,7 +23,7 @@ subprocess.run('clear')
 
 delete = ['rm', '-r', f'{directory}']
 
-subprocess.run(delete)
+subprocess.Popen(delete)
 
 if response.status_code == 204:
     print(f'"{repo}" has been deleted')
