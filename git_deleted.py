@@ -21,7 +21,7 @@ subprocess.run('clear')
 
 # print(response.json())
 
-delete = ['rm', '-r', f'{directory}']
+delete = ['rm', '-rf', f'{directory}']
 
 subprocess.Popen(delete)
 
