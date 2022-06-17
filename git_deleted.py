@@ -1,29 +1,43 @@
 import subprocess
 import requests
+import typer
 
 subprocess.run('clear')
 
-repo = input(f'What are you deleting: ').lower() 
-directory = f'FILENAME/{repo}'
+app = typer.Typer()
 
-USERNAME = 'USERNAME'
-URL = f'https://api.github.com/repos/{USERNAME}/{repo}'
-TOKEN = 'YOUR_AUTHENTICATION'
-AUTHENTICATION = f"token {TOKEN}"
+def repo(name):
+    return name
 
-# jsonPayload = {"owner": USERNAME, "name": repo}
+def github(repo):
+    directory = f'FILENAME/{repo}'
 
-headers = {     "Accept": "application/vnd.github.v3+json",
-                "Authorization": AUTHENTICATION     }
+    USERNAME = 'USERNAME'
+    URL = f'https://api.github.com/repos/{USERNAME}/{repo}'
+    TOKEN = 'YOUR_AUTHENTICATION'
+    AUTHENTICATION = f"token {TOKEN}"
 
-response = requests.delete(URL, headers=headers)
-subprocess.run('clear')
+    headers = {     "Accept": "application/vnd.github.v3+json",
+                    "Authorization": AUTHENTICATION     }
 
-# print(response.json())
+    response = requests.delete(URL, headers=headers)
+    subprocess.run('clear')
 
-delete = ['rm', '-rf', f'{directory}']
+    # print(response.json())
 
-subprocess.Popen(delete)
+    delete = ['rm', '-rf', f'{directory}']
 
-if response.status_code == 204:
-    print(f'"{repo}" has been deleted')
+    subprocess.Popen(delete)
+
+    if response.status_code == 204:
+        print(f'"{repo}" has been deleted')
+    else:
+        print(f'\n{response.status_code}')
+        print(response.content)   
+
+@app.command()
+def delete(name: str):
+    github(repo(name))
+
+if __name__ == "__main__":
+    app()
